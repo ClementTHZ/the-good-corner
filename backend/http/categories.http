@@ -1,0 +1,21 @@
+GET http://localhost:3000/tags
+
+###
+
+POST http://localhost:3000/tags
+content-type: application/json
+
+{
+    "title": "Véhicule"
+}
+
+###
+DELETE http://localhost:3000/tags/1
+
+###
+PUT http://localhost:3000/tags/3
+Content-Type: application/json
+
+{ 
+    "title": "Location"
+}

@@ -1,0 +1,36 @@
+GET http://localhost:3000/ads?search=vélo
+
+###
+GET http://localhost:3000/ads
+
+###
+GET http://localhost:3000/ads/9
+
+###
+
+POST http://localhost:3000/ads
+content-type: application/json
+
+{
+    "title": "green car", 
+    "description": "new car", 
+    "owner": "car.sell@gmail.com", 
+    "price": 1000, 
+    "picture": "https://images.pexels.com/photos/120049/pexels-photo-120049.jpeg", 
+    "createdAt": "2023-10-05", 
+    "city": "paris", 
+    "category": 1, 
+    "tags": [{"id": 2}, {"id": 3}]
+}
+
+###
+DELETE http://localhost:3000/ads/27
+
+###
+PUT http://localhost:3000/ads/13
+content-Type: application/json
+
+{ 
+    "city": "paris", 
+    "price": 44200
+}
