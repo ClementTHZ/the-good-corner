@@ -1,3 +1,4 @@
+import Ad from "./ad";
 import {
   BaseEntity,
   Entity,
@@ -5,15 +6,17 @@ import {
   Column,
   ManyToMany,
 } from "typeorm";
-
-import Ad from "./ad";
+import { Field, ObjectType } from "type-graphql";
 
 @Entity()
+@ObjectType()
 class Tag extends BaseEntity {
   @PrimaryGeneratedColumn()
+  @Field()
   id: number;
 
   @Column()
+  @Field()
   title: string;
 
   @ManyToMany(() => Ad, (ad) => ad.tags)

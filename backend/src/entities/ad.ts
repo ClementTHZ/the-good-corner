@@ -16,6 +16,7 @@ import { Field, ObjectType } from "type-graphql";
 @ObjectType()
 class Ad extends BaseEntity {
   @PrimaryGeneratedColumn()
+  @Field()
   id: number;
 
   @Column()
