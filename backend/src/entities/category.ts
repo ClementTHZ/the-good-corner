@@ -1,3 +1,5 @@
+import Ad from "./ad";
+import { Field, ObjectType } from "type-graphql";
 import {
   BaseEntity,
   Column,
@@ -5,8 +7,6 @@ import {
   PrimaryGeneratedColumn,
   OneToMany,
 } from "typeorm";
-import Ad from "./ad";
-import { Field, ObjectType } from "type-graphql";
 
 @Entity()
 @ObjectType()

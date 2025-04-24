@@ -1,5 +1,5 @@
-import { Query, Resolver } from "type-graphql";
 import Tag from "../entities/tag";
+import { Query, Resolver } from "type-graphql";
 
 @Resolver(Tag)
 class TagResolver {

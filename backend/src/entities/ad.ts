@@ -1,3 +1,6 @@
+import Category from "./category";
+import Tag from "./tag";
+import { Field, ObjectType } from "type-graphql";
 import {
   BaseEntity,
   Column,
@@ -8,9 +11,6 @@ import {
   JoinTable,
   CreateDateColumn,
 } from "typeorm";
-import Category from "./category";
-import Tag from "./tag";
-import { Field, ObjectType } from "type-graphql";
 
 @Entity()
 @ObjectType()
