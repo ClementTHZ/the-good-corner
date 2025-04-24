@@ -6,17 +6,32 @@ import Ad from "./entities/ad";
 import Category from "./entities/category";
 import Tag from "./entities/tag";
 import { FindManyOptions, ILike } from "typeorm";
-
-const app = express();
-
-app.use(cors());
-app.use(express.json());
+import { buildSchema } from "type-graphql";
+import AdResolver from "./resolvers/AdResolvers";
+import CategoryResolver from "./resolvers/CategoryResolver";
+import TagResolver from "./resolvers/TagResolver";
+import { ApolloServer } from "@apollo/server";
+import { startStandaloneServer } from "@apollo/server/standalone";
 
 const port = 3000;
 
+async function startServer() {
+  await dataSource.initialize();
+  const schema = await buildSchema({
+    resolvers: [AdResolver, CategoryResolver, TagResolver],
+  });
+  const server = new ApolloServer({ schema });
+  const { url } = await startStandaloneServer(server, { listen: {} });
+  console.info(`🚀  Server ready at: ${url}`);
+}
+startServer();
+// app.use(cors());
+// app.use(express.json());
+// const app = express();
+
 /* GET */
 
-app.get("/ads", async (req, res) => {
+/*app.get("/ads", async (req, res) => {
   console.log(req.query);
   let findOptions: FindManyOptions<Ad> = {
     relations: { category: true, tags: true },
@@ -39,9 +54,9 @@ app.get("/ads", async (req, res) => {
   }
   const ads = await Ad.find(findOptions);
   res.send(ads);
-});
+}); */
 
-app.get("/ads/:id", async (req, res) => {
+/* app.get("/ads/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const ad = await Ad.findOneOrFail({
@@ -52,21 +67,21 @@ app.get("/ads/:id", async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-});
+}); */
 
-app.get("/categories", async (req, res) => {
+/* app.get("/categories", async (req, res) => {
   const categories = await Category.find();
   res.send(categories);
-});
+}); */
 
-app.get("/tags", async (req, res) => {
+/*app.get("/tags", async (req, res) => {
   const tags = await Tag.find();
   res.send(tags);
-});
+}); */
 
 /* POST */
 
-app.post("/ads", async (req, res) => {
+/* app.post("/ads", async (req, res) => {
   const newAd = new Ad();
   newAd.title = req.body.title;
   newAd.description = req.body.description;
@@ -83,9 +98,9 @@ app.post("/ads", async (req, res) => {
   } catch (error) {
     res.send(error);
   }
-});
+}); */
 
-app.post("/categories", async (req, res) => {
+/*app.post("/categories", async (req, res) => {
   const newCategory = new Category();
   newCategory.title = req.body.title;
   try {
@@ -95,34 +110,34 @@ app.post("/categories", async (req, res) => {
     console.log(error);
     res.status(500).send(error);
   }
-});
+});*/
 
-app.post("/tags", async (req, res) => {
+/*app.post("/tags", async (req, res) => {
   const newTag = new Tag();
   newTag.title = req.body.title;
   await newTag.save();
   res.status(201).send("Tag has been created");
-});
+});*/
 
 /* DELETE */
 
-app.delete("/ads/:id", async (req, res) => {
+/*app.delete("/ads/:id", async (req, res) => {
   await Ad.delete({ id: Number.parseInt(req.params.id) });
   res.send("Ad has been deleted");
-});
+});*/
 
-app.delete("/categories/:id", async (req, res) => {
+/*app.delete("/categories/:id", async (req, res) => {
   await Category.delete({ id: Number.parseInt(req.params.id) });
-});
+});*/
 
-app.delete("/tags/:id", async (req, res) => {
+/*app.delete("/tags/:id", async (req, res) => {
   await Tag.delete({ id: Number.parseInt(req.params.id) });
   res.send("Tag has been deleted");
-});
+});*/
 
 /* PUT */
 
-app.put("/ads/:id", async (req, res) => {
+/*app.put("/ads/:id", async (req, res) => {
   try {
     const body = req.body;
     // concole.log(body)
@@ -154,16 +169,16 @@ app.put("/ads/:id", async (req, res) => {
     console.log(error);
     res.status(500).send(error);
   }
-});
+});*/
 
-app.put("/categories/:id", async (req, res) => {
+/*app.put("/categories/:id", async (req, res) => {
   await Category.update({ id: Number.parseInt(req.params.id) }, req.body);
   res.send("Category has been updated");
-});
+});*/
 
 /* LISTEN */
 
-app.listen(port, async () => {
+/*app.listen(port, async () => {
   await dataSource.initialize();
   const categories = await Category.find();
   if (categories.length === 0) {
@@ -172,4 +187,4 @@ app.listen(port, async () => {
     divers.save();
   }
   console.log("Example app listening on port 3000");
-});
+});*/

@@ -3,7 +3,7 @@ import { Mutation, Query, Resolver } from "type-graphql";
 import { FindManyOptions } from "typeorm";
 
 @Resolver(Ad)
-class AdResolver {
+export default class AdResolver {
   @Query(() => [Ad])
   async getAllAds() {
     let findOptions: FindManyOptions<Ad> = {

@@ -2,7 +2,7 @@ import Tag from "../entities/tag";
 import { Query, Resolver, Mutation } from "type-graphql";
 
 @Resolver(Tag)
-class TagResolver {
+export default class TagResolver {
   @Query(() => [Tag])
   async getAllTags() {
     const tags = await Tag.find();
