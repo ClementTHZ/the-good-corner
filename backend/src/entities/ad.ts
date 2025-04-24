@@ -47,11 +47,13 @@ class Ad extends BaseEntity {
   @Field()
   city: string;
 
-  @ManyToOne(() => Category, (category) => category.ads)
+  @ManyToOne(() => Category, (category) => category.ads, { eager: true })
+  @Field(() => Category)
   category: Category;
 
-  @ManyToMany(() => Tag)
+  @ManyToMany(() => Tag, (tag) => tag.ads, { eager: true })
   @JoinTable()
+  @Field(() => [Tag])
   tags: Tag[];
 }
 
