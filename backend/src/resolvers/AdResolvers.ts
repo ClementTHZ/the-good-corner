@@ -1,5 +1,5 @@
-import Ad from "../entities/ad";
-import { Mutation, Query, Resolver } from "type-graphql";
+import Ad, { AdInput } from "../entities/ad";
+import { Arg, Mutation, Query, Resolver } from "type-graphql";
 import { FindManyOptions } from "typeorm";
 
 @Resolver(Ad)
@@ -18,7 +18,23 @@ export default class AdResolver {
   async GetAdById() {}
 
   @Mutation(() => Ad)
-  createAd() {}
+  async createAd(@Arg("data") data: AdInput) {
+    const ad = new Ad();
+    ad.title = data.title;
+    ad.description = data.description;
+    ad.owner = data.owner;
+    ad.price = data.price;
+    ad.picture = data.picture;
+    ad.city = data.city;
+    ad.category = data.category;
+    try {
+      await ad.save();
+      return ad;
+    } catch (error) {
+      console.warn(error);
+      return ad;
+    }
+  }
 
   @Mutation(() => Ad)
   deleteAd() {}

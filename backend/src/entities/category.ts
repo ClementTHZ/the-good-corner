@@ -1,5 +1,5 @@
 import Ad from "./ad";
-import { Field, ObjectType } from "type-graphql";
+import { Field, ID, InputType, ObjectType } from "type-graphql";
 import {
   BaseEntity,
   Column,
@@ -20,6 +20,15 @@ class Category extends BaseEntity {
   title: string;
 
   @OneToMany(() => Ad, (ad) => ad.category)
+  ads: Ad[];
+}
+
+@InputType()
+export class CategoryInput {
+  @Field()
+  title: string;
+
+  @Field(() => [ID])
   ads: Ad[];
 }
 

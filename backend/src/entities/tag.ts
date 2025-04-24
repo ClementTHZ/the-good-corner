@@ -1,5 +1,5 @@
 import Ad from "./ad";
-import { Field, ObjectType } from "type-graphql";
+import { Field, ID, InputType, ObjectType } from "type-graphql";
 import {
   BaseEntity,
   Entity,
@@ -20,6 +20,15 @@ class Tag extends BaseEntity {
   title: string;
 
   @ManyToMany(() => Ad, (ad) => ad.tags)
+  ads: Ad[];
+}
+
+@InputType()
+export class TagInput {
+  @Field()
+  title: string;
+
+  @Field(() => [ID])
   ads: Ad[];
 }
 
