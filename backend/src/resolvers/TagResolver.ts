@@ -1,5 +1,5 @@
 import Tag from "../entities/tag";
-import { Query, Resolver } from "type-graphql";
+import { Query, Resolver, Mutation } from "type-graphql";
 
 @Resolver(Tag)
 class TagResolver {
@@ -8,4 +8,10 @@ class TagResolver {
     const tags = await Tag.find();
     return tags;
   }
+
+  @Mutation(() => Tag)
+  createTag() {}
+
+  @Mutation(() => Tag)
+  deleteTag() {}
 }
