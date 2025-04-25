@@ -1,13 +1,11 @@
-import AdCard, { AdCardProps } from "./AdCard";
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { Link, useSearchParams } from "react-router";
-import { toast } from "react-toastify";
+import AdCard from "./AdCard";
+import { useState } from "react";
+import { Link } from "react-router";
+import { useGetAllAdsQuery } from "../generated/graphql-types";
 
 export const RecentsAds = () => {
-  const [total, setTotal] = useState(0);
-
-  /* fonction react router Pour récupérer les params */
+  /*
+  //fonction react router Pour récupérer les params
   const [searchParams] = useSearchParams();
 
   // console.log(searchParams.get("category"));
@@ -37,22 +35,23 @@ export const RecentsAds = () => {
       console.error(error);
     }
     fetchData();
-  };
+  }; */
 
+  const [total, setTotal] = useState(0);
+
+  const { data, loading, error } = useGetAllAdsQuery();
+
+  if (loading) return <p>Wait for it ...</p>;
+  if (error) return <p>Woops, on a tout cassé</p>;
   return (
     <>
       <h2>Annonces récentes</h2>
       <p>Prix total: {total} €</p>
       <section className="recent-ads">
-        {ads.map((ad) => (
+        {data?.getAllAds.map((ad) => (
           <div>
             <Link key={ad.id} to={`/ad/${ad.id}`}>
-              <AdCard
-                title={ad.title}
-                picture={ad.picture}
-                price={ad.price}
-                link={ad.link}
-              />
+              <AdCard title={ad.title} picture={ad.picture} price={ad.price} />
             </Link>
             <button
               className="button"
@@ -61,16 +60,6 @@ export const RecentsAds = () => {
               }}
             >
               Ajouter au total
-            </button>
-            <button
-              className="button"
-              onClick={() => {
-                if (ad.id) {
-                  handleDelete(ad.id);
-                }
-              }}
-            >
-              Supprimer
             </button>
           </div>
         ))}
