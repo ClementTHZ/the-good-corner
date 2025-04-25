@@ -20,6 +20,9 @@ export default class TagResolver {
     return tag.id;
   }
 
-  @Mutation(() => Tag)
-  deleteTag() {} // TODO Make function DeleteTag
+  @Mutation(() => ID)
+  async deleteTag(@Arg("id") id: number) {
+    await Tag.delete({ id });
+    return id;
+  } // TODO Make function DeleteTag with Cascade trueor NOT NULL dans l'entities
 }

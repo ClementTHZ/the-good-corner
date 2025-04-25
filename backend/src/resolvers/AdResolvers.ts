@@ -46,7 +46,7 @@ export default class AdResolver {
 
   @Mutation(() => ID)
   async deleteAd(@Arg("id") id: number) {
-    Ad.delete({ id });
+    await Ad.delete({ id });
     return id;
   }
 
