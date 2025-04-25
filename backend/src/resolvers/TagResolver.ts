@@ -1,6 +1,6 @@
-import Tag from "../entities/tag";
+import Tag, { TagInput } from "../entities/tag";
 import { FindManyOptions } from "typeorm";
-import { Query, Resolver, Mutation } from "type-graphql";
+import { Query, Resolver, Mutation, ID, Arg } from "type-graphql";
 
 @Resolver(Tag)
 export default class TagResolver {
@@ -13,9 +13,13 @@ export default class TagResolver {
     return tags;
   }
 
-  @Mutation(() => Tag)
-  createTag() {}
+  @Mutation(() => ID)
+  async createTag(@Arg("data") data: TagInput) {
+    const tag = Tag.create({ ...data });
+    await tag.save();
+    return tag.id;
+  }
 
   @Mutation(() => Tag)
-  deleteTag() {}
+  deleteTag() {} // TODO Make function DeleteTag
 }

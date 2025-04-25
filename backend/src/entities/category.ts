@@ -28,9 +28,6 @@ class Category extends BaseEntity {
 export class CategoryInput {
   @Field()
   title: string;
-
-  @Field(() => [ID])
-  ads: Ad[];
 }
 
 export default Category;

@@ -28,9 +28,6 @@ class Tag extends BaseEntity {
 export class TagInput {
   @Field()
   title: string;
-
-  @Field(() => [ID])
-  ads: Ad[];
 }
 
 export default Tag;

@@ -1,6 +1,6 @@
 import { FindManyOptions } from "typeorm";
-import Category from "../entities/category";
-import { Mutation, Query, Resolver } from "type-graphql";
+import Category, { CategoryInput } from "../entities/category";
+import { Arg, ID, Mutation, Query, Resolver } from "type-graphql";
 import Ad from "../entities/ad";
 
 @Resolver(Category)
@@ -14,12 +14,13 @@ export default class CategoryResolver {
     return categories;
   }
 
-  @Mutation(() => Category)
-  createCategory() {}
+  @Mutation(() => ID)
+  async createCategory(@Arg("data") data: CategoryInput) {
+    const category = Category.create({ ...data });
+    await category.save();
+    return category.id;
+  }
 
   @Mutation(() => Category)
-  deleteCategory() {}
-
-  @Mutation(() => Category)
-  updateCategory() {}
+  deleteCategory() {} // TODO Make function DeleteCategory
 }
