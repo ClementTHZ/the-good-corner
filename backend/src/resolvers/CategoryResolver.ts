@@ -6,7 +6,7 @@ import Ad from "../entities/ad";
 @Resolver(Category)
 export default class CategoryResolver {
   @Query(() => [Category])
-  async getAllCategory() {
+  async getAllCategories() {
     let findOptions: FindManyOptions<Category> = {
       relations: { ads: true },
     };

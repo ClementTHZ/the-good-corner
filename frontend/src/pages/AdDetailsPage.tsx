@@ -55,9 +55,6 @@ export const AdDetailsPage = function () {
             </svg>
             Envoyer un email
           </a>
-
-          {/* Création du bouton supprimer sur une annonce */}
-
           <button
             className="submit"
             onClick={async () => {

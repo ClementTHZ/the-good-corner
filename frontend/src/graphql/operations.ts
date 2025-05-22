@@ -20,6 +20,19 @@ export const GET_ALL_CATEGORIES = gql`
   }
 `;
 
+export const GET_ALL_TAGS = gql`
+  query GetAllTags {
+    getAllTags {
+      id
+      title
+      ads {
+        id
+        title
+      }
+    }
+  }
+`;
+
 export const GET_AD = gql`
   query GetAdById($getAdId: Float!) {
     getAdById(id: $getAdId) {
@@ -38,6 +51,19 @@ export const GET_AD = gql`
         id
         title
       }
+    }
+  }
+`;
+
+export const GET_ALL_CATEGORIES_AND_TAG = gql`
+  query getAllCategoriesAndTags {
+    getAllCategories {
+      id
+      title
+    }
+    getAllTags {
+      id
+      title
     }
   }
 `;
