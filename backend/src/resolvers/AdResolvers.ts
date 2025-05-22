@@ -15,7 +15,7 @@ export default class AdResolver {
   }
 
   @Query(() => Ad)
-  async GetAdById(@Arg("id") id: number) {
+  async getAdById(@Arg("id") id: number) {
     const ad = Ad.findOneByOrFail({ id });
     return ad;
   }

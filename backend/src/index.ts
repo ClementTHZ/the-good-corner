@@ -31,7 +31,8 @@ app.get("/ads", async (req, res) => {
   let findOptions: FindManyOptions<Ad> = {
     relations: { category: true, tags: true },
   };
-  if (req.query.category !== undefined) {
+  if (req.query.category !== undefined) {clear
+  
     findOptions = {
       ...findOptions,
       where: {
