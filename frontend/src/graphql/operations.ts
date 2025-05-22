@@ -19,3 +19,31 @@ export const GET_ALL_CATEGORIES = gql`
     }
   }
 `;
+
+export const GET_AD = gql`
+  query GetAdById($getAdId: Float!) {
+    getAdById(id: $getAdId) {
+      title
+      description
+      owner
+      price
+      picture
+      city
+      createdAt
+      category {
+        title
+        id
+      }
+      tags {
+        id
+        title
+      }
+    }
+  }
+`;
+
+export const DELETE_AD = gql`
+  mutation deleteAd($deleteAdId: Float!) {
+    deleteAd(id: $deleteAdId)
+  }
+`;

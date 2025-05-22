@@ -98,7 +98,7 @@ export type MutationUpdateAdArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  GetAdById: Ad;
+  getAdById: Ad;
   getAllAds: Array<Ad>;
   getAllCategories: Array<Category>;
   getAllTags: Array<Tag>;
@@ -129,6 +129,20 @@ export type GetAllCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetAllCategoriesQuery = { __typename?: 'Query', getAllCategories: Array<{ __typename?: 'Category', id: number, title: string }> };
+
+export type GetAdByIdQueryVariables = Exact<{
+  getAdId: Scalars['Float']['input'];
+}>;
+
+
+export type GetAdByIdQuery = { __typename?: 'Query', getAdById: { __typename?: 'Ad', title: string, description: string, owner: string, price: number, picture: string, city: string, createdAt: any, category: { __typename?: 'Category', title: string, id: number }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } };
+
+export type DeleteAdMutationVariables = Exact<{
+  deleteAdId: Scalars['Float']['input'];
+}>;
+
+
+export type DeleteAdMutation = { __typename?: 'Mutation', deleteAd: string };
 
 
 export const GetAllAdsDocument = gql`
@@ -213,3 +227,88 @@ export type GetAllCategoriesQueryHookResult = ReturnType<typeof useGetAllCategor
 export type GetAllCategoriesLazyQueryHookResult = ReturnType<typeof useGetAllCategoriesLazyQuery>;
 export type GetAllCategoriesSuspenseQueryHookResult = ReturnType<typeof useGetAllCategoriesSuspenseQuery>;
 export type GetAllCategoriesQueryResult = Apollo.QueryResult<GetAllCategoriesQuery, GetAllCategoriesQueryVariables>;
+export const GetAdByIdDocument = gql`
+    query GetAdById($getAdId: Float!) {
+  getAdById(id: $getAdId) {
+    title
+    description
+    owner
+    price
+    picture
+    city
+    createdAt
+    category {
+      title
+      id
+    }
+    tags {
+      id
+      title
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetAdByIdQuery__
+ *
+ * To run a query within a React component, call `useGetAdByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAdByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAdByIdQuery({
+ *   variables: {
+ *      getAdId: // value for 'getAdId'
+ *   },
+ * });
+ */
+export function useGetAdByIdQuery(baseOptions: Apollo.QueryHookOptions<GetAdByIdQuery, GetAdByIdQueryVariables> & ({ variables: GetAdByIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAdByIdQuery, GetAdByIdQueryVariables>(GetAdByIdDocument, options);
+      }
+export function useGetAdByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAdByIdQuery, GetAdByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAdByIdQuery, GetAdByIdQueryVariables>(GetAdByIdDocument, options);
+        }
+export function useGetAdByIdSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetAdByIdQuery, GetAdByIdQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetAdByIdQuery, GetAdByIdQueryVariables>(GetAdByIdDocument, options);
+        }
+export type GetAdByIdQueryHookResult = ReturnType<typeof useGetAdByIdQuery>;
+export type GetAdByIdLazyQueryHookResult = ReturnType<typeof useGetAdByIdLazyQuery>;
+export type GetAdByIdSuspenseQueryHookResult = ReturnType<typeof useGetAdByIdSuspenseQuery>;
+export type GetAdByIdQueryResult = Apollo.QueryResult<GetAdByIdQuery, GetAdByIdQueryVariables>;
+export const DeleteAdDocument = gql`
+    mutation deleteAd($deleteAdId: Float!) {
+  deleteAd(id: $deleteAdId)
+}
+    `;
+export type DeleteAdMutationFn = Apollo.MutationFunction<DeleteAdMutation, DeleteAdMutationVariables>;
+
+/**
+ * __useDeleteAdMutation__
+ *
+ * To run a mutation, you first call `useDeleteAdMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteAdMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteAdMutation, { data, loading, error }] = useDeleteAdMutation({
+ *   variables: {
+ *      deleteAdId: // value for 'deleteAdId'
+ *   },
+ * });
+ */
+export function useDeleteAdMutation(baseOptions?: Apollo.MutationHookOptions<DeleteAdMutation, DeleteAdMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteAdMutation, DeleteAdMutationVariables>(DeleteAdDocument, options);
+      }
+export type DeleteAdMutationHookResult = ReturnType<typeof useDeleteAdMutation>;
+export type DeleteAdMutationResult = Apollo.MutationResult<DeleteAdMutation>;
+export type DeleteAdMutationOptions = Apollo.BaseMutationOptions<DeleteAdMutation, DeleteAdMutationVariables>;
