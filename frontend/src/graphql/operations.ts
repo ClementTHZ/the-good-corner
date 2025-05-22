@@ -10,3 +10,12 @@ export const GET_ALL_ADS = gql`
     }
   }
 `;
+
+export const GET_ALL_CATEGORIES = gql`
+  query GetAllCategories {
+    getAllCategories {
+      id
+      title
+    }
+  }
+`;

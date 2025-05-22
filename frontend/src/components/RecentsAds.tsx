@@ -41,8 +41,8 @@ export const RecentsAds = () => {
 
   const { data, loading, error } = useGetAllAdsQuery();
 
-  if (loading) return <p>Wait for it ...</p>;
-  if (error) return <p>Woops, on a tout cassé</p>;
+  if (loading) return <p>En attente</p>;
+  if (error) return <p>Une erreur est apparue</p>;
   return (
     <>
       <h2>Annonces récentes</h2>
