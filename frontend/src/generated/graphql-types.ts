@@ -154,6 +154,13 @@ export type DeleteAdMutationVariables = Exact<{
 
 export type DeleteAdMutation = { __typename?: 'Mutation', deleteAd: string };
 
+export type CreateAdMutationVariables = Exact<{
+  data: AdInput;
+}>;
+
+
+export type CreateAdMutation = { __typename?: 'Mutation', createAd: string };
+
 
 export const GetAllAdsDocument = gql`
     query GetAllAds {
@@ -410,3 +417,34 @@ export function useDeleteAdMutation(baseOptions?: Apollo.MutationHookOptions<Del
 export type DeleteAdMutationHookResult = ReturnType<typeof useDeleteAdMutation>;
 export type DeleteAdMutationResult = Apollo.MutationResult<DeleteAdMutation>;
 export type DeleteAdMutationOptions = Apollo.BaseMutationOptions<DeleteAdMutation, DeleteAdMutationVariables>;
+export const CreateAdDocument = gql`
+    mutation createAd($data: AdInput!) {
+  createAd(data: $data)
+}
+    `;
+export type CreateAdMutationFn = Apollo.MutationFunction<CreateAdMutation, CreateAdMutationVariables>;
+
+/**
+ * __useCreateAdMutation__
+ *
+ * To run a mutation, you first call `useCreateAdMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateAdMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createAdMutation, { data, loading, error }] = useCreateAdMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateAdMutation(baseOptions?: Apollo.MutationHookOptions<CreateAdMutation, CreateAdMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateAdMutation, CreateAdMutationVariables>(CreateAdDocument, options);
+      }
+export type CreateAdMutationHookResult = ReturnType<typeof useCreateAdMutation>;
+export type CreateAdMutationResult = Apollo.MutationResult<CreateAdMutation>;
+export type CreateAdMutationOptions = Apollo.BaseMutationOptions<CreateAdMutation, CreateAdMutationVariables>;

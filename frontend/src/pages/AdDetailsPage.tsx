@@ -4,13 +4,21 @@ import {
   useDeleteAdMutation,
   useGetAdByIdQuery,
 } from "../generated/graphql-types";
+import { GET_ALL_ADS } from "../graphql/operations";
 
 export const AdDetailsPage = function () {
   const navigate = useNavigate();
   // Permet de donnée la valeur des params dans l'URL à ID
   const { id } = useParams();
 
-  const [deleteAd] = useDeleteAdMutation();
+  const [deleteAd] = useDeleteAdMutation({
+    // -> Permet le refresh du cache après la suppression
+    refetchQueries: [
+      {
+        query: GET_ALL_ADS, // On réexecute cette Query si Delete est un succès
+      },
+    ],
+  });
 
   const { data, loading, error } = useGetAdByIdQuery({
     variables: { getAdId: Number(id) },

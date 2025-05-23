@@ -73,3 +73,9 @@ export const DELETE_AD = gql`
     deleteAd(id: $deleteAdId)
   }
 `;
+
+export const CREATE_AD = gql`
+  mutation createAd($data: AdInput!) {
+    createAd(data: $data)
+  }
+`;

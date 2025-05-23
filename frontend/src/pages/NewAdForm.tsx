@@ -1,53 +1,51 @@
-import axios from "axios";
-import { Category, Tag, Inputs } from "../types";
-import { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
+import {
+  AdInput,
+  useCreateAdMutation,
+  useGetAllCategoriesAndTagsQuery,
+} from "../generated/graphql-types";
+import { GET_ALL_ADS } from "../graphql/operations";
 
 export const NewAdForm = () => {
   const navigate = useNavigate();
 
-  const [categories, setCategories] = useState<Category[]>([]);
+  const { loading, error, data } = useGetAllCategoriesAndTagsQuery();
+  const [createAd] = useCreateAdMutation({
+    refetchQueries: [
+      {
+        query: GET_ALL_ADS,
+      },
+    ],
+  });
+  const { register, handleSubmit } = useForm<AdInput>();
 
-  const [tags, setTags] = useState<Tag[]>([]);
-
-  const fetchCategoriesAndTags = async () => {
-    const categories = await axios.get<Category[]>(
-      "http://localhost:3000/categories"
-    );
-    setCategories(categories.data);
-
-    const tags = await axios.get<Tag[]>("http://localhost:3000/tags");
-    setTags(tags.data);
-  };
-
-  const { register, handleSubmit } = useForm<Inputs>();
-
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const onSubmit: SubmitHandler<AdInput> = async (data) => {
+    const sanitizeData = { ...data, price: Number(data.price) };
     try {
-      await axios.post("http://localhost:3000/ads", data);
+      await createAd({
+        variables: { data: sanitizeData },
+      });
       navigate("/");
-      toast.success("Ad has been created");
+      toast.success("L'annonce à été créer avec succès !");
     } catch (error) {
-      toast.error("An error occurred");
+      toast.error("Un erreur empêche la suppression");
       console.log(error);
     }
   };
 
-  /* SANS REACT HOOK FORM */
+  if (loading) return <p>En attente...</p>;
+  if (error) return <p>Une erreur est apparue</p>;
+
+  /* SANS REACT HOOK FORM 
   //   const handleSubmit = async (e: React.FormEvent) => {
   //     e.preventDefault();
   //     const form = e.target;
   //     const formData = new FormData(form as HTMLFormElement);
   //     const formJson = Object.fromEntries(formData.entries());
   //     await axios.post("http://localhost:3000/ads", formJson);
-  //   };
-
-  useEffect(() => {
-    fetchCategoriesAndTags();
-  }, []);
-
+  //   };*/
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <input
@@ -81,21 +79,18 @@ export const NewAdForm = () => {
         {...register("city", { required: true })}
       />
       <br />
-
       {/* On map sur notre tableau de categories pour les afficher sous forme de selection */}
-
       <select {...register("category", { required: true })}>
-        {categories.map((el) => (
+        {data?.getAllCategories.map((el) => (
           <option value={el.id} key={el.id}>
             {el.title}
           </option>
         ))}
+        ;
       </select>
       <br />
-
       {/* on map sur notre tableau de tags pour les afficher avec les checkboxs */}
-
-      {tags.map((el) => (
+      {data?.getAllTags.map((el) => (
         <div key={el.id}>
           <label>
             {el.title}
@@ -106,44 +101,45 @@ export const NewAdForm = () => {
       <button type="submit">Créer l'annonce</button>
     </form>
 
-    /* SANS REACT HOOK FORM */
-    // <form
-    //   onSubmit={async (e) => {
-    //     handleSubmit(e);
-    //   }}
-    // >
-    //   <label>
-    //     Titre de l'annonce :<input className="text-field" name="title"></input>
-    //   </label>
-    //   <br />
-    //   <label>
-    //     Description :<input className="text-field" name="description"></input>
-    //   </label>
-    //   <br />
-    //   <label>
-    //     Owner :<input className="text-field" name="owner"></input>
-    //   </label>
-    //   <br />
-    //   <label>
-    //     Price :<input className="text-field" name="price"></input> €
-    //   </label>
-    //   <br />
-    //   <label>
-    //     picture :<input className="text-field" name="picture"></input>
-    //   </label>
-    //   <br />
-    //   <label>
-    //     City :<input className="text-field" name="city"></input>
-    //   </label>
-    //   <br />
-    //   <select name="category">
-    //     {categories.map((el) => (
-    //       <option value={el.id} key={el.id}>
-    //         {el.title}
-    //       </option>
-    //     ))}
-    //   </select>
-    //   <button className="button">Submit</button>
-    // </form>
+    /* SANS REACT HOOK FORM 
+     <form
+       onSubmit={async (e) => {
+         handleSubmit(e);
+       }}
+     >
+       <label>
+         Titre de l'annonce :<input className="text-field" name="title"></input>
+       </label>
+       <br />
+       <label>
+         Description :<input className="text-field" name="description"></input>
+       </label>
+       <br />
+       <label>
+         Owner :<input className="text-field" name="owner"></input>
+       </label>
+       <br />
+       <label>
+         Price :<input className="text-field" name="price"></input> €
+       </label>
+       <br />
+       <label>
+         picture :<input className="text-field" name="picture"></input>
+       </label>
+       <br />
+       <label>
+         City :<input className="text-field" name="city"></input>
+       </label>
+       <br />
+       <select name="category">
+         {categories.map((el) => (
+           <option value={el.id} key={el.id}>
+             {el.title}
+           </option>
+         ))}
+       </select>
+       <button className="button">Submit</button>
+     </form> 
+     */
   );
 };
