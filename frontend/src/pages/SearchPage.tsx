@@ -45,12 +45,7 @@ export const SearchPage = () => {
           <div>
             {/* La key se met sur l'élément qui se répète / élément parent */}
             <Link key={ad.id} to={`/ad/${ad.id}`}>
-              <AdCard
-                title={ad.title}
-                picture={ad.picture}
-                price={ad.price}
-                link={ad.link}
-              />
+              <AdCard title={ad.title} picture={ad.picture} price={ad.price} />
             </Link>
             <button
               className="button"

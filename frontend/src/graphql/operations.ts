@@ -79,3 +79,15 @@ export const CREATE_AD = gql`
     createAd(data: $data)
   }
 `;
+
+export const CREATE_CATEGORY = gql`
+  mutation CreateCategory($data: CategoryInput!) {
+    createCategory(data: $data)
+  }
+`;
+
+export const CREATE_TAG = gql`
+  mutation CreateTag($data: TagInput!) {
+    createTag(data: $data)
+  }
+`;

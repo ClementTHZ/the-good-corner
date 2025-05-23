@@ -1,14 +1,33 @@
-import axios from "axios";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useCreateTagMutation } from "../generated/graphql-types";
+import { GET_ALL_TAGS } from "../graphql/operations";
+import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
-type inputs = {
+type tagInputs = {
   title: string;
 };
 
 export const NewTagForm = () => {
-  const { register, handleSubmit } = useForm<inputs>();
-  const onSubmit: SubmitHandler<inputs> = async (data) => {
-    await axios.post("http://localhost:3000/tags", data);
+  const navigate = useNavigate();
+  const [createTag] = useCreateTagMutation({
+    refetchQueries: [
+      {
+        query: GET_ALL_TAGS,
+      },
+    ],
+  });
+
+  const { register, handleSubmit } = useForm<tagInputs>();
+  const onSubmit: SubmitHandler<tagInputs> = async (data) => {
+    try {
+      await createTag({ variables: { data: data } });
+      navigate("/");
+      toast.success("L'annonce à été créer avec succès !");
+    } catch (error) {
+      console.log(error);
+      toast.error("Un erreur empêche la suppression");
+    }
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
