@@ -1,0 +1,20 @@
+services:
+  backend:
+    build: ./backend # indique le chemin vers le Dockerfile à utiliser
+    ports:
+      - 5050:3000 # expose le port 3000 du container sur le port 5050 de ta machine
+    command: npm run dev
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          'curl --fail --request POST --header ''Content-Type: application/json'' --url ''http://backend:3000'' --data ''{"query":"query { __typename }"}'' || exit 1',
+        ]
+
+  frontend:
+    build: ./frontend # indique le chemin vers le Dockerfile à utiliser
+    ports:
+      - 8080:5173 # expose le port 5173 du container sur le port 8080 de ta machine
+    depends_on:
+      backend:
+        condition: service_healthy

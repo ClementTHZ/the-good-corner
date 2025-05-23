@@ -8,7 +8,7 @@ import { App } from "./App.tsx";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 
 const client = new ApolloClient({
-  uri: "http://localhost:3000",
+  uri: "http://localhost:5050", // => Apollo Client se connecte au backend Docker via localhost:5050 (port 3000 exposé côté docker)
   cache: new InMemoryCache(),
 });
 

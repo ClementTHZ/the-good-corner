@@ -1,0 +1,22 @@
+# Utilise une image légère officielle de Node.js avec Alpine Linux
+FROM node:lts-alpine  
+
+# Définit et crée le dossier de travail dans le container
+WORKDIR /app
+
+# Copie les fichiers de config et de dépendances
+COPY vite.config.ts vite.config.ts
+COPY package*.json ./
+COPY tsconfig*.json ./
+
+# Installe les dépendances listées dans package.json
+RUN npm i
+
+
+# Copie les autres fichiers de l'application
+COPY index.html index.html
+COPY public public
+COPY src src
+
+# Démarre l'application avec le script de développement
+CMD npm run dev
